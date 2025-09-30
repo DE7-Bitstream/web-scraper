@@ -1,12 +1,14 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib
+from __init__ import *
 
+# 한글 폰트 설정 (MacOS 기준)
 matplotlib.rcParams['font.family'] = 'AppleGothic'
 matplotlib.rcParams['axes.unicode_minus'] = False  # 마이너스 기호 깨짐 방지
 
 # CSV 불러오기
-df = pd.read_csv("melon_chart_weekly_2024.csv")
+df = pd.read_csv(f"{CSV_DIR}/melon_chart_weekly_2024.csv")
 
 # Top 10 곡만 선택
 df = df[df['rank'] <= 10]
