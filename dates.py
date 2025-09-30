@@ -1,10 +1,15 @@
 from datetime import datetime, timedelta
 
 def calculate_weeks(year):
+    # 1월 1일이 속한 주의 월요일로 시작
     start_date = datetime(year, 1, 1)
     if start_date.weekday() != 0:  # 월요일이 아니면 그 전으로 이동
         start_date -= timedelta(days=start_date.weekday())
     
+    # 시작 날짜가 이전 연도에 속한 경우, 다음 주 월요일로 이동
+    if start_date.year < year:
+        start_date += timedelta(days=7)
+
     today = datetime.today()
     end_date = min(datetime(year, 12, 31), today)
 
