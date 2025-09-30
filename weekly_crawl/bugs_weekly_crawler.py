@@ -6,8 +6,8 @@ from __init__ import *
 
 
 def get_bs_from_days(start_day, end_day) -> BeautifulSoup:
-    HEADER = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36" }
-    url = f"https://www.melon.com/chart/week/index.htm?classCd=GN0000&moved=Y&startDay={start_day}&endDay={end_day}"
+    HEADER = { "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36" }
+    url = f"https://music.bugs.co.kr/chart/track/week/total?chartdate={start_day}"
     
     response = requests.get(url, headers=HEADER)
     bs = BeautifulSoup(response.text, "html.parser")
@@ -20,9 +20,9 @@ def parse_chart(bs) -> list:
     '''
     songs = []
     for tr in bs.select("tr"):
-        rank = tr.select_one(".rank")
-        title = tr.select_one(".wrap_song_info .rank01 a")
-        performer = tr.select_one(".wrap_song_info .rank02 a")
+        rank = tr.select_one(".ranking strong")
+        title = tr.select_one(".title a")
+        performer = tr.select_one(".artist a")
         
         if rank and title and performer:
             songs.append({
@@ -40,7 +40,7 @@ def crawl_data_by_days_url(start_day, end_day) -> list:
 
 def crawl_and_write_data_by_year(year) -> None:
     weeks = calculate_weeks(year)
-    output_file = f"{CSV_DIR}/melon_chart_weekly_{year}.csv"
+    output_file = f"{CSV_DIR}/bugs_chart_weekly_{year}.csv"
 
     with open(output_file, "w", newline="", encoding="utf-8-sig") as f:
         writer = csv.writer(f)
